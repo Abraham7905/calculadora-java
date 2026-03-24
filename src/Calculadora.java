@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Calculadora {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        ArrayList<String> historial = new ArrayList<>();
         int opcion;
 
         do {
@@ -12,7 +14,8 @@ public class Calculadora {
             System.out.println("2. Restar");
             System.out.println("3. Multiplicar");
             System.out.println("4. Dividir");
-            System.out.println("5. Salir");
+            System.out.println("5. Ver historial");
+            System.out.println("6. Salir");
             System.out.print("Elige una opción: ");
 
             opcion = scanner.nextInt();
@@ -25,16 +28,20 @@ public class Calculadora {
                 double num2 = scanner.nextDouble();
 
                 double resultado = 0;
+                String operacion = "";
 
                 switch (opcion) {
                     case 1:
                         resultado = sumar(num1, num2);
+                        operacion = num1 + " + " + num2 + " = " + resultado;
                         break;
                     case 2:
                         resultado = restar(num1, num2);
+                        operacion = num1 + " - " + num2 + " = " + resultado;
                         break;
                     case 3:
                         resultado = multiplicar(num1, num2);
+                        operacion = num1 + " * " + num2 + " = " + resultado;
                         break;
                     case 4:
                         if (num2 == 0) {
@@ -42,13 +49,26 @@ public class Calculadora {
                             continue;
                         }
                         resultado = dividir(num1, num2);
+                        operacion = num1 + " / " + num2 + " = " + resultado;
                         break;
                 }
 
+                historial.add(operacion);
                 System.out.println("Resultado: " + resultado);
             }
 
-        } while (opcion != 5);
+            if (opcion == 5) {
+                System.out.println("\n=== HISTORIAL ===");
+                if (historial.isEmpty()) {
+                    System.out.println("No hay operaciones aún.");
+                } else {
+                    for (String op : historial) {
+                        System.out.println(op);
+                    }
+                }
+            }
+
+        } while (opcion != 6);
 
         System.out.println("Programa finalizado.");
         scanner.close();

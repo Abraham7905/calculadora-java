@@ -14,6 +14,5 @@ Proyecto de calculadora por consola desarrollado en Java.
 javac Calculadora.java
 java Calculadora
 
-AUTOR ABRAHAM VELASQUEZ
-
----
+## Nuevas funcionalidades
+- Historial de operaciones

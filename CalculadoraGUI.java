@@ -1,27 +1,54 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class CalculadoraGUI {
 
     private CalculadoraService calc = new CalculadoraService();
 
     public CalculadoraGUI() {
-        JFrame frame = new JFrame("Calculadora");
-        frame.setSize(300, 300);
+        JFrame frame = new JFrame("Calculadora PRO");
+        frame.setSize(400, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new GridLayout(6, 2));
+        frame.setLayout(new BorderLayout());
+
+        // Panel superior (inputs)
+        JPanel topPanel = new JPanel(new GridLayout(3, 2, 10, 10));
 
         JTextField num1 = new JTextField();
         JTextField num2 = new JTextField();
-        JLabel resultado = new JLabel("Resultado:");
+        JLabel resultado = new JLabel("Resultado: ");
+
+        topPanel.add(new JLabel("Número 1:"));
+        topPanel.add(num1);
+        topPanel.add(new JLabel("Número 2:"));
+        topPanel.add(num2);
+        topPanel.add(resultado);
+
+        // Panel botones
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10));
 
         JButton sumar = new JButton("Sumar");
         JButton restar = new JButton("Restar");
         JButton multiplicar = new JButton("Multiplicar");
         JButton dividir = new JButton("Dividir");
 
-        ActionListener listener = e -> {
+        buttonPanel.add(sumar);
+        buttonPanel.add(restar);
+        buttonPanel.add(multiplicar);
+        buttonPanel.add(dividir);
+
+        // Historial
+        DefaultListModel<String> modeloHistorial = new DefaultListModel<>();
+        JList<String> listaHistorial = new JList<>(modeloHistorial);
+        JScrollPane scroll = new JScrollPane(listaHistorial);
+
+        // Cargar historial existente
+        for (String op : calc.obtenerHistorial()) {
+            modeloHistorial.addElement(op);
+        }
+
+        // Acción botones
+        java.awt.event.ActionListener listener = e -> {
             try {
                 double a = Double.parseDouble(num1.getText());
                 double b = Double.parseDouble(num2.getText());
@@ -34,8 +61,13 @@ public class CalculadoraGUI {
 
                 resultado.setText("Resultado: " + res);
 
+                modeloHistorial.clear();
+                for (String op : calc.obtenerHistorial()) {
+                    modeloHistorial.addElement(op);
+                }
+
             } catch (Exception ex) {
-                resultado.setText("Error");
+                resultado.setText("Error: " + ex.getMessage());
             }
         };
 
@@ -44,17 +76,9 @@ public class CalculadoraGUI {
         multiplicar.addActionListener(listener);
         dividir.addActionListener(listener);
 
-        frame.add(new JLabel("Número 1:"));
-        frame.add(num1);
-        frame.add(new JLabel("Número 2:"));
-        frame.add(num2);
-
-        frame.add(sumar);
-        frame.add(restar);
-        frame.add(multiplicar);
-        frame.add(dividir);
-
-        frame.add(resultado);
+        frame.add(topPanel, BorderLayout.NORTH);
+        frame.add(buttonPanel, BorderLayout.CENTER);
+        frame.add(scroll, BorderLayout.SOUTH);
 
         frame.setVisible(true);
     }

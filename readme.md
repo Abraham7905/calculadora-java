@@ -16,3 +16,8 @@ java Calculadora
 
 ## Nuevas funcionalidades
 - Historial de operaciones
+##  Características
+- Interfaz gráfica (Swing)
+- Historial persistente (archivo)
+- Manejo de errores
+
